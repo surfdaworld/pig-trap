@@ -45,6 +45,8 @@ void setup(){
     digitalWrite(armed_led, LOW);
     digitalWrite(triggered_led, LOW);
     //Particle.variable("LastLocation", LastLocation);
+	
+	bool success = Particle.function("trapstatus", TrapStatus);
 }
 
 void loop(){
@@ -192,5 +194,21 @@ void send_alerts() {
             delay(2000);
         }
     }
+
+}
+
+void trapstatus() {
+
+	String CurrentState;
+
+	if (digitalRead(switch_trigger) == HIGH) {
+		CurrentState = "armed";
+	}
+	
+	if (digitalRead(switch_trigger) == LOW) {
+		CurrentState = "triggered";
+	}
+
+	Particle.publish(CurrentState, LastLocation);
 
 }
